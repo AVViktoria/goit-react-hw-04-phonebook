@@ -1,6 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-const Filter = ({ value, onChange }) => {
+export default function Filter({ value, onChange }) {
   return (
     <form>
       <div className="inputBox">
@@ -20,6 +21,8 @@ const Filter = ({ value, onChange }) => {
       </div>
     </form>
   );
+}
+Filter.prototype = {
+  value: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
 };
-
-export default Filter;
