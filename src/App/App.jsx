@@ -3,11 +3,6 @@ import '../index.scss'
 
 //*      Libraries      //
 import { nanoid } from 'nanoid';
-// import styled from 'styled-components'
-// import { color } from 'styled-system'
-
-
-
 
 //*      Components      //
 import ContactList from 'components/ContactList';
@@ -37,12 +32,6 @@ class App extends Component {
       contacts: prevState.contacts.filter(contact => contact.id !== contactId),
     }));
   };
-  // //*                              //
-  // formSubmitHandler = e => {
-  //   e.preventDefault();
-  //   console.log(e);
-  // }
-  
 
   //*  берем  данные по сабмиту  кнопки  //
   addContact = ({ name, number }) => {
