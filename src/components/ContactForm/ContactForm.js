@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 
 export default function ContactForm({ onSubmit }) {
   const [name, setName] = useState('');
@@ -78,6 +79,9 @@ export default function ContactForm({ onSubmit }) {
     </form>
   );
 }
+ContactForm.prototype = {
+  onSubmit: PropTypes.func.isRequired,
+};
 
 // class ContactForm extends Component {
 //   state = {
