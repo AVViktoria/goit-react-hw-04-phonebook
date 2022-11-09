@@ -1,12 +1,9 @@
 import PropTypes from 'prop-types';
 
-// import styled from 'styled-components'
-
 //*    styles..//
-const Container = ({ children }) => {
+export default function Container({ children }) {
   return <div className="container">{children}</div>;
-};
-export default Container;
+}
 
 Container.propTypes = {
   children: PropTypes.node.isRequired,
