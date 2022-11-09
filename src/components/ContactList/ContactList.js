@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const ContactList = ({ contacts, onDeleteContactItem }) => {
+export default function ContactList({ contacts, onDeleteContactItem }) {
+  // const [name, setName] = useState('');
+  // const [number, setNumber] = useState('');
   return (
     <ul>
       {contacts.map(elt => {
@@ -23,9 +25,7 @@ const ContactList = ({ contacts, onDeleteContactItem }) => {
       })}
     </ul>
   );
-};
-
-export default ContactList;
+}
 
 ContactList.propTypes = {
   contacts: PropTypes.arrayOf(
