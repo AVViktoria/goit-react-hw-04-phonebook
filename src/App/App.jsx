@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+// import React, { Component } from 'react';
+import { useState } from 'react';
 import '../index.scss'
 
 //*      Libraries      //
@@ -10,34 +11,46 @@ import ContactForm from 'components/ContactForm';
 import Filter from 'components/Filter';
 import Container from 'components/Container';
 import Section from 'components/Section/Section';
+import useLocalStorage from 'hooks/useLocalStorage';
 
 
 //*      Root      //
-class App extends Component {
-  state = {
-    contacts: [
+export default function App() {
+  // state = {
+  //   contacts: [
+  //     { id: nanoid(), name: 'Rosie Simpson', number: '459-12-56' },
+  //     { id: nanoid(), name: 'Hermione Kline', number: '443-89-12' },
+  //     { id: nanoid(), name: 'Eden Clements', number: '645-17-79' },
+  //     { id: nanoid(), name: 'Annie Copeland', number: '227-91-26' },
+  //   ],
+  //   filter: '',
+  //   name: '',
+  //   number: '', };
+
+  const [contacts, setContacts] = useLocalStorage('contacts',[
       { id: nanoid(), name: 'Rosie Simpson', number: '459-12-56' },
       { id: nanoid(), name: 'Hermione Kline', number: '443-89-12' },
       { id: nanoid(), name: 'Eden Clements', number: '645-17-79' },
       { id: nanoid(), name: 'Annie Copeland', number: '227-91-26' },
-    ],
-    filter: '',
-    name: '',
-    number: '',
-  };
+    ]);
+  const [filter, setFilter] = useState('');
+  // const [name, setName] = useState('');
+  // const [number, setNumber] = useState('');
+
+
+ 
 
   //*  удаляем контакт из  списка  фильтра   //
-  deleteContactItem = contactId => {
-    this.setState(prevState => ({
-      contacts: prevState.contacts.filter(contact => contact.id !== contactId),
-    }));
+  const deleteContactItem = contactId => {
+    setContacts(contacts.filter(contact => contact.id !== contactId),
+    );
   };
 
   //*  берем  данные по сабмиту  кнопки  //
-  addContact = ({ name, number }) => {
+  const addContact = ({ name, number }) => {
     const normalizedFilter = name.toLowerCase();
     
-    const checkByName = this.state.contacts.find(contact => contact.name.toLowerCase() === normalizedFilter);
+    const checkByName = contacts.find(contact => contact.name.toLowerCase() === normalizedFilter);
     if (checkByName) {
       alert(`${name} is already in contacts`);
     } else {
@@ -47,77 +60,91 @@ class App extends Component {
         completed: false,
       };
     
-      this.setState(({ contacts }) => ({
+      setContacts ({
         contacts: [contact, ...contacts],
-      }));
+      });
     };
   }
 
  //*  фильтруем по имени  //
-  getVisibleContacts = () => {
-    const { filter, contacts } = this.state;
+  const getVisibleContacts = () => {
+    // const { filter, contacts } = this.state;
     const normalizedFilter = filter.toLowerCase();
     
     return contacts.filter(contact =>
       contact.name.toLowerCase().includes(normalizedFilter),
     );
   }
-    // //*  прописываем  внутри инпута   //
-  handleChange = evt => {
-    this.setState({ filter: evt.currentTarget.value });
+    // *  прописываем  внутри инпута   //
+  const handleChange = evt => {
+    setFilter(evt.currentTarget.value);
   };
 
   //*     При обновлении страницы наши контакты на месте,    //
  //*           сохренены в локал сторадж        //
   
-componentDidMount() {
-    const contacts = localStorage.getItem('contacts');
-    const parsedContacts= JSON.parse(contacts);
+// const componentDidMount() {
+//     const contacts = localStorage.getItem('contacts');
+//     const parsedContacts= JSON.parse(contacts);
 
-//*    что бы в контакты не сохранилось null   //
-  if (parsedContacts) {
-      this.setState({ contacts: parsedContacts });
-    }
-   }
+// //*    что бы в контакты не сохранилось null   //
+//   if (parsedContacts) {
+//       this.setState({ contacts: parsedContacts });
+//     }
+//    }
+//  
   
-  
-  componentDidUpdate(prevProps, prevState) {
-      const { contacts } = this.state;
-    const nextContacts = contacts;
+  // const componentDidUpdate(prevProps, prevState) {
+  //     const { contacts } = this.state;
+  //   const nextContacts = contacts;
 
-    const prevContacts = prevState.contacts;
+  //   const prevContacts = prevState.contacts;
 
-   //* Проверяем что бы не зациклить компонент  //
-    if (nextContacts !== prevContacts) {
-      console.log('Обновилось поле contacts, записываю contacts в хранилище');
-      localStorage.setItem('contacts', JSON.stringify(nextContacts));
-    }
-  }
+  //  //* Проверяем что бы не зациклить компонент  //
+  //   if (nextContacts !== prevContacts) {
+  //     console.log('Обновилось поле contacts, записываю contacts в хранилище');
+  //     localStorage.setItem('contacts', JSON.stringify(nextContacts));
+  //   }
+  // }
 
 
-  render() {
-    const { filter } = this.state;
-    const visibleContacts =  this.getVisibleContacts();
+  // render() {
+    // const { filter } = this.state;
+    const visibleContacts =  getVisibleContacts();
     return (
       <>
         <Section >
         <Container >
         <h1 className = "title">Phonebook</h1>
-          <ContactForm onSubmit={this.addContact} />
+          <ContactForm onSubmit={addContact} />
         </Container>
         <Container >
           <h2 className = "title">Contacts</h2>
         <Filter value={filter}
-            onChange={this.handleChange}/>
+            onChange={handleChange}/>
           <ContactList
             contacts={visibleContacts}
-            onDeleteContactItem={this.deleteContactItem}
+            onDeleteContactItem={deleteContactItem}
           />
           </Container>
           </Section>
       </>
     );
   }
-}
+// }
 
-export default App;
+
+//  useEffect(()=>{
+//   const contacts = localStorage.getItem('contacts');
+//     const parsedContacts= JSON.parse(contacts);
+  
+//   this.setState({ contacts: parsedContacts });
+// }, [parsedContacts])
+
+// useEffect(()=>{
+//   const nextContacts = contacts;
+//   // const prevContacts = prevState.contacts;
+  
+//   console.log('Обновилось поле contacts, записываю contacts в хранилище');
+//       localStorage.setItem('contacts', JSON.stringify(nextContacts));
+// }, [contacts])

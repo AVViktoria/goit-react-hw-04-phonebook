@@ -2,8 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 export default function ContactList({ contacts, onDeleteContactItem }) {
-  // const [name, setName] = useState('');
-  // const [number, setNumber] = useState('');
   return (
     <ul>
       {contacts.map(elt => {
